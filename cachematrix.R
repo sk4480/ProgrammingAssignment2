@@ -1,16 +1,17 @@
-## This program calculates inverse of square-matrix given as input.
-## It makes up 2 main functions. makeCacheMatrix() function inverse and cache a given matrix.
-## CacheSolve() calls getinvert() from the 1st function,If it reads it returns the ouput.
-## If not, it calculates the inverse using solve() and sets the value using makeCacheMatrix$setinvert. 
+## This program calculates inverse of a given square-matrix.
+## It is made up of 2 main functions. makeCacheMatrix() function sets/reads matrix
+## CacheSolve() calls getinvert() from the 1st function,If it finds it returns the ouput.
+## Else, it computes the inverse using solve() and sets the value using setinvert(). 
 
-## makeCacheMatrix() takes input as a matrix
+## makeCacheMatrix() takes input as a matrix. The subfunction/output are:
 ## set() - sets value for x and m and superassign (<<-) it to parent environment.
 ## get() - read the matrix from parent environment (lexical scoping)
 ## setinvert() - value of m (inverse matrix) is assigned to parent environmet
 ## getinvert() - Reads the inverted matrix (m)
-## makeCacheMatrix() does not check if a matrix is square, or if it is a singular/inversible (ie. determinant=0)
+## It doesn't check if a matrix is square, or if it is a singular/not inversible. 
 
 ## Test Run
+##---------
 ##> m1 <- makeCacheMatrix(matrix(rnorm(9),3,3))
 ##> cacheSolve(m1)
 ##Cache Miss - Inverting Matrix
@@ -34,13 +35,16 @@ makeCacheMatrix <- function(x = matrix()) {
       get <- function() x
       setinvert <- function(invert) m <<- invert
       getinvert <- function() m
+      #The list of output produced is named
       list(set = set, get = get,
            setinvert = setinvert,
            getinvert = getinvert)
+     
 }
 
-#cacheSOlve() takes input matrix 'x'. If getinvert() does not return NULL, it retruns already stored 'm'.
-#Else, it uses solve() to calculate inversion,stores it in 'm', and returns 'm'. 
+#cacheSolve() calculates inverse of matrix. Output of makeCacheMatrix() is its input. 
+#If getinvert() does not show NULL, it retruns already stored inverse from 'm'.
+#Else, it uses solve() to calculate inverse of matrix,stores it in 'm', and returns 'm'. 
 cacheSolve <- function(x, ...) {
       m <- x$getinvert()
       if(!is.null(m)) {
